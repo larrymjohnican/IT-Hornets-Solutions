@@ -1,0 +1,271 @@
+import { useState } from 'react'
+import { Phone, Mail, Clock, MapPin, CheckCircle } from 'lucide-react'
+import ScrollFadeIn from '@/components/ScrollFadeIn'
+
+const serviceOptions = [
+  'Internet Cable Installation (Residential)',
+  'Internet Cable Installation (Commercial)',
+  'TV Mounting',
+  'Other',
+]
+
+export default function Contact() {
+  const [form, setForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    service: '',
+    address: '',
+    message: '',
+  })
+  const [submitted, setSubmitted] = useState(false)
+
+  const handleChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setSubmitted(true)
+  }
+
+  return (
+    <>
+      {/* Page Header */}
+      <section className="bg-navy-light pt-32 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(45,142,245,0.07) 0%, transparent 70%)',
+          }}
+        />
+        <div className="relative z-10 max-w-3xl mx-auto text-center">
+          <p className="text-brand text-sm font-semibold tracking-widest uppercase mb-3">
+            Let's Talk
+          </p>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-5">
+            Get a Free Quote
+          </h1>
+          <p className="text-gray-400 text-lg leading-relaxed">
+            Fill out the form below and we'll get back to you promptly to discuss your
+            project and provide a no-obligation quote.
+          </p>
+        </div>
+      </section>
+
+      {/* Form + Info */}
+      <section className="bg-navy py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
+
+            {/* Form (3/5) */}
+            <div className="lg:col-span-3">
+              <ScrollFadeIn>
+                <div className="bg-navy-light rounded-2xl p-8 border border-white/5">
+                  {submitted ? (
+                    <div className="flex flex-col items-center justify-center py-12 text-center">
+                      <div className="bg-brand/15 rounded-full p-5 mb-5">
+                        <CheckCircle size={40} className="text-brand" />
+                      </div>
+                      <h2 className="text-2xl font-bold text-white mb-3">
+                        Message Sent!
+                      </h2>
+                      <p className="text-gray-400 max-w-sm">
+                        Thank you for reaching out. We'll review your request and get
+                        back to you shortly.
+                      </p>
+                      <button
+                        onClick={() => { setSubmitted(false); setForm({ name: '', phone: '', email: '', service: '', address: '', message: '' }) }}
+                        className="mt-8 btn-outline text-sm"
+                      >
+                        Send Another Request
+                      </button>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                      <h2 className="text-xl font-bold text-white mb-1">
+                        Quote Request Form
+                      </h2>
+                      <p className="text-gray-400 text-sm mb-6">
+                        All fields marked * are required.
+                      </p>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                          <label className="block text-gray-300 text-sm font-medium mb-1.5">
+                            Full Name *
+                          </label>
+                          <input
+                            type="text"
+                            name="name"
+                            required
+                            value={form.name}
+                            onChange={handleChange}
+                            placeholder="Jane Smith"
+                            className="input-field"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-gray-300 text-sm font-medium mb-1.5">
+                            Phone Number *
+                          </label>
+                          <input
+                            type="tel"
+                            name="phone"
+                            required
+                            value={form.phone}
+                            onChange={handleChange}
+                            placeholder="(555) 123-4567"
+                            className="input-field"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-300 text-sm font-medium mb-1.5">
+                          Email Address *
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          required
+                          value={form.email}
+                          onChange={handleChange}
+                          placeholder="jane@example.com"
+                          className="input-field"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-300 text-sm font-medium mb-1.5">
+                          Service Type *
+                        </label>
+                        <select
+                          name="service"
+                          required
+                          value={form.service}
+                          onChange={handleChange}
+                          className="input-field"
+                        >
+                          <option value="" disabled>Select a service...</option>
+                          {serviceOptions.map((opt) => (
+                            <option key={opt} value={opt}>
+                              {opt}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-300 text-sm font-medium mb-1.5">
+                          Service Address *
+                        </label>
+                        <input
+                          type="text"
+                          name="address"
+                          required
+                          value={form.address}
+                          onChange={handleChange}
+                          placeholder="123 Main St, Charlotte, NC"
+                          className="input-field"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-300 text-sm font-medium mb-1.5">
+                          Additional Details
+                        </label>
+                        <textarea
+                          name="message"
+                          rows={4}
+                          value={form.message}
+                          onChange={handleChange}
+                          placeholder="Tell us more about your project — number of rooms, TV size, special requirements, etc."
+                          className="input-field resize-none"
+                        />
+                      </div>
+
+                      <button type="submit" className="btn-primary w-full text-center text-base py-4">
+                        Send Quote Request
+                      </button>
+                    </form>
+                  )}
+                </div>
+              </ScrollFadeIn>
+            </div>
+
+            {/* Contact Info (2/5) */}
+            <div className="lg:col-span-2">
+              <ScrollFadeIn delay={150}>
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-white font-bold text-lg mb-5">Contact Information</h3>
+                    <ul className="space-y-5">
+                      <li className="flex items-start gap-4">
+                        <div className="bg-brand/10 rounded-lg p-2.5 shrink-0 mt-0.5">
+                          <Phone size={18} className="text-brand" />
+                        </div>
+                        <div>
+                          <p className="text-white font-medium text-sm mb-0.5">Phone</p>
+                          <p className="text-gray-400 text-sm">(555) 000-0000</p>
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-4">
+                        <div className="bg-brand/10 rounded-lg p-2.5 shrink-0 mt-0.5">
+                          <Mail size={18} className="text-brand" />
+                        </div>
+                        <div>
+                          <p className="text-white font-medium text-sm mb-0.5">Email</p>
+                          <p className="text-gray-400 text-sm">info@hornetsitsolutions.com</p>
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-4">
+                        <div className="bg-brand/10 rounded-lg p-2.5 shrink-0 mt-0.5">
+                          <MapPin size={18} className="text-brand" />
+                        </div>
+                        <div>
+                          <p className="text-white font-medium text-sm mb-0.5">Service Area</p>
+                          <p className="text-gray-400 text-sm">North Carolina and surrounding areas</p>
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-4">
+                        <div className="bg-brand/10 rounded-lg p-2.5 shrink-0 mt-0.5">
+                          <Clock size={18} className="text-brand" />
+                        </div>
+                        <div>
+                          <p className="text-white font-medium text-sm mb-0.5">Hours</p>
+                          <p className="text-gray-400 text-sm">Monday – Saturday</p>
+                          <p className="text-gray-400 text-sm">8:00 AM – 6:00 PM</p>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-navy-light rounded-2xl p-6 border border-white/5 mt-6">
+                    <h4 className="text-white font-semibold text-sm mb-2">What to Expect</h4>
+                    <ul className="space-y-2 text-sm text-gray-400">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle size={13} className="text-brand shrink-0" />
+                        We'll respond within 1 business day
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle size={13} className="text-brand shrink-0" />
+                        Free, no-obligation quote
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle size={13} className="text-brand shrink-0" />
+                        Flexible scheduling to fit your needs
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </ScrollFadeIn>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
