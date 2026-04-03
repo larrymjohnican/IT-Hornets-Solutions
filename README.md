@@ -42,11 +42,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 The contact form submits via [Formspree](https://formspree.io). The form ID is configured in `src/pages/Contact.jsx`:
 
-```js
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xreoykgp'
-```
-
-Submissions are delivered to **itsolutionshornet@gmail.com**.
+The form ID is set directly in `src/pages/Contact.jsx`. Keep it out of public READMEs — lock it down via Formspree's domain allowlist instead.
 
 ---
 
