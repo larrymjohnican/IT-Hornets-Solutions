@@ -19,7 +19,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <div className="min-h-screen flex flex-col bg-navy">
+      <div className="min-h-screen flex flex-col bg-white dark:bg-navy transition-colors duration-300">
         <Navbar />
         <main className="flex-1">
           <Routes>

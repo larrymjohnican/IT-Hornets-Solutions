@@ -3,7 +3,7 @@ import { ArrowRight, ChevronDown } from 'lucide-react'
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-navy overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center bg-white dark:bg-navy overflow-hidden transition-colors duration-300">
       {/* Background radial glow */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -15,10 +15,10 @@ export default function Hero() {
 
       {/* Subtle dot grid overlay */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-20"
+        className="absolute inset-0 pointer-events-none opacity-10 dark:opacity-20"
         style={{
           backgroundImage:
-            'radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)',
+            'radial-gradient(circle, rgba(45,142,245,0.3) 1px, transparent 1px)',
           backgroundSize: '32px 32px',
         }}
       />
@@ -34,14 +34,14 @@ export default function Hero() {
         </div>
 
         {/* Headline */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold leading-tight mb-6">
+        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold leading-tight mb-6 text-gray-900 dark:text-white">
           <span className="text-brand">Connected</span> Homes.
           <br />
           <span className="text-brand">Connected</span> Businesses.
         </h1>
 
         {/* Subheading */}
-        <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-gray-500 dark:text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
           Hornets IT Solutions provides expert internet cable installation and TV
           mounting for homes and businesses across North Carolina. Fast, clean, and
           done right the first time.
@@ -60,7 +60,7 @@ export default function Hero() {
 
         {/* Scroll indicator */}
         <div className="mt-20 flex justify-center animate-bounce">
-          <ChevronDown size={24} className="text-gray-600" />
+          <ChevronDown size={24} className="text-gray-400 dark:text-gray-600" />
         </div>
       </div>
     </section>

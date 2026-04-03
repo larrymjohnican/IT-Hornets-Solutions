@@ -10,15 +10,15 @@ const quickLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-navy-light border-t border-white/5">
+    <footer className="bg-gray-50 dark:bg-navy-light border-t border-gray-200 dark:border-white/5 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
           {/* Brand */}
           <div>
-            <div className="text-xl font-bold text-white mb-3">
+            <div className="text-xl font-bold text-gray-900 dark:text-white mb-3">
               Hornets <span className="text-brand">IT</span> Solutions
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed mb-4">
+            <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-4">
               Connected Homes. Connected Businesses.<br />
               Professional cable installation and TV mounting across North Carolina.
             </p>
@@ -26,7 +26,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
+            <h4 className="text-gray-900 dark:text-white font-semibold mb-4 text-sm uppercase tracking-wider">
               Quick Links
             </h4>
             <ul className="space-y-2">
@@ -34,7 +34,7 @@ export default function Footer() {
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-gray-400 hover:text-brand text-sm transition-colors duration-200"
+                    className="text-gray-500 dark:text-gray-400 hover:text-brand text-sm transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -45,23 +45,23 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
+            <h4 className="text-gray-900 dark:text-white font-semibold mb-4 text-sm uppercase tracking-wider">
               Contact
             </h4>
             <ul className="space-y-3">
-              <li className="flex items-center gap-3 text-gray-400 text-sm">
+              <li className="flex items-center gap-3 text-gray-500 dark:text-gray-400 text-sm">
                 <Phone size={15} className="text-brand shrink-0" />
                 <span>(555) 000-0000</span>
               </li>
-              <li className="flex items-center gap-3 text-gray-400 text-sm">
+              <li className="flex items-center gap-3 text-gray-500 dark:text-gray-400 text-sm">
                 <Mail size={15} className="text-brand shrink-0" />
                 <span>info@hornetsitsolutions.com</span>
               </li>
-              <li className="flex items-center gap-3 text-gray-400 text-sm">
+              <li className="flex items-center gap-3 text-gray-500 dark:text-gray-400 text-sm">
                 <MapPin size={15} className="text-brand shrink-0" />
                 <span>North Carolina</span>
               </li>
-              <li className="flex items-center gap-3 text-gray-400 text-sm">
+              <li className="flex items-center gap-3 text-gray-500 dark:text-gray-400 text-sm">
                 <Clock size={15} className="text-brand shrink-0" />
                 <span>Mon–Sat, 8am–6pm</span>
               </li>
@@ -70,8 +70,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/5 mt-10 pt-6 text-center">
-          <p className="text-gray-500 text-sm">
+        <div className="border-t border-gray-200 dark:border-white/5 mt-10 pt-6 text-center">
+          <p className="text-gray-400 dark:text-gray-500 text-sm">
             © 2025 Hornets IT Solutions LLC. All rights reserved.
           </p>
         </div>

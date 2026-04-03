@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { Phone, Mail, Clock, MapPin, CheckCircle } from 'lucide-react'
+import { Mail, Clock, MapPin, CheckCircle, Loader2 } from 'lucide-react'
 import ScrollFadeIn from '@/components/ScrollFadeIn'
 
+// TODO: Replace with your Formspree form ID after signing up at formspree.io
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xreoykgp'
+
 const serviceOptions = [
-  'Internet Cable Installation (Residential)',
-  'Internet Cable Installation (Commercial)',
-  'TV Mounting',
+  'Tech Consultation',
   'Other',
 ]
 
@@ -15,24 +16,42 @@ export default function Contact() {
     phone: '',
     email: '',
     service: '',
-    address: '',
     message: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSubmitted(true)
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (res.ok) {
+        setSubmitted(true)
+      } else {
+        setError('Something went wrong. Please try again or email us directly.')
+      }
+    } catch {
+      setError('Network error. Please check your connection and try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <>
       {/* Page Header */}
-      <section className="bg-navy-light pt-32 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <section className="bg-gray-50 dark:bg-navy-light pt-32 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden transition-colors duration-300">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -44,10 +63,10 @@ export default function Contact() {
           <p className="text-brand text-sm font-semibold tracking-widest uppercase mb-3">
             Let's Talk
           </p>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-5">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mb-5">
             Get a Free Quote
           </h1>
-          <p className="text-gray-400 text-lg leading-relaxed">
+          <p className="text-gray-500 dark:text-gray-400 text-lg leading-relaxed">
             Fill out the form below and we'll get back to you promptly to discuss your
             project and provide a no-obligation quote.
           </p>
@@ -55,23 +74,23 @@ export default function Contact() {
       </section>
 
       {/* Form + Info */}
-      <section className="bg-navy py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-white dark:bg-navy py-20 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
 
             {/* Form (3/5) */}
             <div className="lg:col-span-3">
               <ScrollFadeIn>
-                <div className="bg-navy-light rounded-2xl p-8 border border-white/5">
+                <div className="bg-gray-50 dark:bg-navy-light rounded-2xl p-8 border border-gray-200 dark:border-white/5">
                   {submitted ? (
                     <div className="flex flex-col items-center justify-center py-12 text-center">
                       <div className="bg-brand/15 rounded-full p-5 mb-5">
                         <CheckCircle size={40} className="text-brand" />
                       </div>
-                      <h2 className="text-2xl font-bold text-white mb-3">
+                      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
                         Message Sent!
                       </h2>
-                      <p className="text-gray-400 max-w-sm">
+                      <p className="text-gray-500 dark:text-gray-400 max-w-sm">
                         Thank you for reaching out. We'll review your request and get
                         back to you shortly.
                       </p>
@@ -84,16 +103,22 @@ export default function Contact() {
                     </div>
                   ) : (
                     <form onSubmit={handleSubmit} className="space-y-5">
-                      <h2 className="text-xl font-bold text-white mb-1">
+                      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
                         Quote Request Form
                       </h2>
-                      <p className="text-gray-400 text-sm mb-6">
+                      <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
                         All fields marked * are required.
                       </p>
 
+                      {error && (
+                        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-red-600 dark:text-red-400 text-sm">
+                          {error}
+                        </div>
+                      )}
+
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
-                          <label className="block text-gray-300 text-sm font-medium mb-1.5">
+                          <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1.5">
                             Full Name *
                           </label>
                           <input
@@ -107,13 +132,12 @@ export default function Contact() {
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-300 text-sm font-medium mb-1.5">
-                            Phone Number *
+                          <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1.5">
+                            Phone Number
                           </label>
                           <input
                             type="tel"
                             name="phone"
-                            required
                             value={form.phone}
                             onChange={handleChange}
                             placeholder="(555) 123-4567"
@@ -123,7 +147,7 @@ export default function Contact() {
                       </div>
 
                       <div>
-                        <label className="block text-gray-300 text-sm font-medium mb-1.5">
+                        <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1.5">
                           Email Address *
                         </label>
                         <input
@@ -138,7 +162,7 @@ export default function Contact() {
                       </div>
 
                       <div>
-                        <label className="block text-gray-300 text-sm font-medium mb-1.5">
+                        <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1.5">
                           Service Type *
                         </label>
                         <select
@@ -158,36 +182,27 @@ export default function Contact() {
                       </div>
 
                       <div>
-                        <label className="block text-gray-300 text-sm font-medium mb-1.5">
-                          Service Address *
-                        </label>
-                        <input
-                          type="text"
-                          name="address"
-                          required
-                          value={form.address}
-                          onChange={handleChange}
-                          placeholder="123 Main St, Charlotte, NC"
-                          className="input-field"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-gray-300 text-sm font-medium mb-1.5">
-                          Additional Details
+                        <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1.5">
+                          Tell Us About Your Needs *
                         </label>
                         <textarea
                           name="message"
                           rows={4}
+                          required
                           value={form.message}
                           onChange={handleChange}
-                          placeholder="Tell us more about your project — number of rooms, TV size, special requirements, etc."
+                          placeholder="Describe what you're looking for — we'll get back to you within 1 business day."
                           className="input-field resize-none"
                         />
                       </div>
 
-                      <button type="submit" className="btn-primary w-full text-center text-base py-4">
-                        Send Quote Request
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="btn-primary w-full text-center text-base py-4 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                      >
+                        {loading && <Loader2 size={18} className="animate-spin" />}
+                        {loading ? 'Sending…' : 'Send Quote Request'}
                       </button>
                     </form>
                   )}
@@ -200,24 +215,15 @@ export default function Contact() {
               <ScrollFadeIn delay={150}>
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-white font-bold text-lg mb-5">Contact Information</h3>
+                    <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-5">Contact Information</h3>
                     <ul className="space-y-5">
-                      <li className="flex items-start gap-4">
-                        <div className="bg-brand/10 rounded-lg p-2.5 shrink-0 mt-0.5">
-                          <Phone size={18} className="text-brand" />
-                        </div>
-                        <div>
-                          <p className="text-white font-medium text-sm mb-0.5">Phone</p>
-                          <p className="text-gray-400 text-sm">(555) 000-0000</p>
-                        </div>
-                      </li>
                       <li className="flex items-start gap-4">
                         <div className="bg-brand/10 rounded-lg p-2.5 shrink-0 mt-0.5">
                           <Mail size={18} className="text-brand" />
                         </div>
                         <div>
-                          <p className="text-white font-medium text-sm mb-0.5">Email</p>
-                          <p className="text-gray-400 text-sm">info@hornetsitsolutions.com</p>
+                          <p className="text-gray-900 dark:text-white font-medium text-sm mb-0.5">Email</p>
+                          <p className="text-gray-500 dark:text-gray-400 text-sm">itsolutionshornet@gmail.com</p>
                         </div>
                       </li>
                       <li className="flex items-start gap-4">
@@ -225,8 +231,8 @@ export default function Contact() {
                           <MapPin size={18} className="text-brand" />
                         </div>
                         <div>
-                          <p className="text-white font-medium text-sm mb-0.5">Service Area</p>
-                          <p className="text-gray-400 text-sm">North Carolina and surrounding areas</p>
+                          <p className="text-gray-900 dark:text-white font-medium text-sm mb-0.5">Service Area</p>
+                          <p className="text-gray-500 dark:text-gray-400 text-sm">Charlotte, NC and surrounding areas</p>
                         </div>
                       </li>
                       <li className="flex items-start gap-4">
@@ -234,17 +240,17 @@ export default function Contact() {
                           <Clock size={18} className="text-brand" />
                         </div>
                         <div>
-                          <p className="text-white font-medium text-sm mb-0.5">Hours</p>
-                          <p className="text-gray-400 text-sm">Monday – Saturday</p>
-                          <p className="text-gray-400 text-sm">8:00 AM – 6:00 PM</p>
+                          <p className="text-gray-900 dark:text-white font-medium text-sm mb-0.5">Hours</p>
+                          <p className="text-gray-500 dark:text-gray-400 text-sm">Monday – Saturday</p>
+                          <p className="text-gray-500 dark:text-gray-400 text-sm">8:00 AM – 6:00 PM</p>
                         </div>
                       </li>
                     </ul>
                   </div>
 
-                  <div className="bg-navy-light rounded-2xl p-6 border border-white/5 mt-6">
-                    <h4 className="text-white font-semibold text-sm mb-2">What to Expect</h4>
-                    <ul className="space-y-2 text-sm text-gray-400">
+                  <div className="bg-gray-50 dark:bg-navy-light rounded-2xl p-6 border border-gray-200 dark:border-white/5 mt-6">
+                    <h4 className="text-gray-900 dark:text-white font-semibold text-sm mb-2">What to Expect</h4>
+                    <ul className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
                       <li className="flex items-center gap-2">
                         <CheckCircle size={13} className="text-brand shrink-0" />
                         We'll respond within 1 business day

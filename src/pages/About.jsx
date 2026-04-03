@@ -14,7 +14,7 @@ const values = [
     icon: Heart,
     title: 'Customer First',
     description:
-      'We treat every home and business like it\'s our own. Your satisfaction is our top priority on every job.',
+      "We treat every home and business like it's our own. Your satisfaction is our top priority on every job.",
   },
   {
     icon: Zap,
@@ -34,7 +34,7 @@ export default function About() {
   return (
     <>
       {/* Mission Section */}
-      <section className="bg-navy pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <section className="bg-white dark:bg-navy pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden transition-colors duration-300">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -49,15 +49,15 @@ export default function About() {
               <p className="text-brand text-sm font-semibold tracking-widest uppercase mb-3">
                 Our Story
               </p>
-              <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-6 leading-tight">
+              <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 leading-tight">
                 Connecting North Carolina, One Install at a Time
               </h1>
-              <p className="text-gray-400 text-lg leading-relaxed mb-4">
+              <p className="text-gray-500 dark:text-gray-400 text-lg leading-relaxed mb-4">
                 Hornets IT Solutions LLC was founded with a simple mission: to bring
                 professional-grade cable installation and TV mounting services to homes
                 and businesses across North Carolina.
               </p>
-              <p className="text-gray-400 text-lg leading-relaxed">
+              <p className="text-gray-500 dark:text-gray-400 text-lg leading-relaxed">
                 We believe every home deserves a fast, reliable wired connection and every
                 business deserves a network built to grow with them. We show up on time,
                 do the job right, and take pride in every cable run and wall mount we
@@ -70,10 +70,10 @@ export default function About() {
               {stats.map((stat) => (
                 <div
                   key={stat.label}
-                  className="bg-navy-light rounded-2xl p-6 border border-white/5 text-center"
+                  className="bg-gray-50 dark:bg-navy-light rounded-2xl p-6 border border-gray-200 dark:border-white/5 text-center"
                 >
                   <div className="text-3xl font-extrabold text-brand mb-1">{stat.value}</div>
-                  <div className="text-gray-400 text-xs font-medium leading-tight">{stat.label}</div>
+                  <div className="text-gray-500 dark:text-gray-400 text-xs font-medium leading-tight">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -82,7 +82,7 @@ export default function About() {
       </section>
 
       {/* Meet the Team */}
-      <section className="bg-navy-light py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 dark:bg-navy-light py-20 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
         <div className="max-w-4xl mx-auto">
           <ScrollFadeIn>
             <div className="text-center mb-12">
@@ -100,7 +100,7 @@ export default function About() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {team.map((member, i) => (
               <ScrollFadeIn key={member.id} delay={i * 100}>
-                <div className="bg-navy rounded-2xl border border-white/5 hover:border-brand/30 transition-all duration-300">
+                <div className="bg-white dark:bg-navy rounded-2xl border border-gray-200 dark:border-white/5 hover:border-brand/30 transition-all duration-300">
                   <TeamMemberCard
                     name={member.name}
                     role={member.role}
@@ -114,7 +114,7 @@ export default function About() {
       </section>
 
       {/* Values */}
-      <section className="bg-navy py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-white dark:bg-navy py-20 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
         <div className="max-w-5xl mx-auto">
           <ScrollFadeIn>
             <div className="text-center mb-12">
@@ -128,14 +128,14 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {values.map((value, i) => (
               <ScrollFadeIn key={value.title} delay={i * 100}>
-                <div className="bg-navy-light rounded-2xl p-7 border border-white/5 hover:border-brand/30 transition-all duration-300 text-center">
+                <div className="bg-gray-50 dark:bg-navy-light rounded-2xl p-7 border border-gray-200 dark:border-white/5 hover:border-brand/30 transition-all duration-300 text-center">
                   <div className="flex justify-center mb-4">
                     <div className="bg-brand/10 rounded-xl p-3">
                       <value.icon size={24} className="text-brand" />
                     </div>
                   </div>
-                  <h3 className="text-white font-bold text-lg mb-2">{value.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{value.description}</p>
+                  <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">{value.title}</h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">{value.description}</p>
                 </div>
               </ScrollFadeIn>
             ))}

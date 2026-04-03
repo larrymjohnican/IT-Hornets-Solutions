@@ -5,8 +5,8 @@ export default function TeamMemberCard({ name, role, initials }) {
       <div className="w-20 h-20 rounded-full bg-brand/20 border-2 border-brand/40 flex items-center justify-center mb-4 shadow-glow-sm">
         <span className="text-brand font-bold text-xl">{initials}</span>
       </div>
-      <h4 className="text-white font-semibold text-base mb-1">{name}</h4>
-      <p className="text-gray-400 text-sm">{role}</p>
+      <h4 className="text-gray-900 dark:text-white font-semibold text-base mb-1">{name}</h4>
+      <p className="text-gray-500 dark:text-gray-400 text-sm">{role}</p>
     </div>
   )
 }
