@@ -2,7 +2,7 @@
 
 Professional business website for **IT Hornets Solutions**, a Charlotte, NC-based IT services company offering tech support, network setup, device troubleshooting, and more for homes and small businesses.
 
-🌐 **Live site:** https://hornets-it-solutions.vercel.app
+🌐 **Live site:** https://hornetsitsolutions.com
 
 ---
 
