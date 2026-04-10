@@ -8,6 +8,7 @@ const navLinks = [
   { label: 'Services', to: '/services' },
   { label: 'About', to: '/about' },
   { label: 'Contact', to: '/contact' },
+  { label: 'Schedule', to: '/schedule' },
 ]
 
 export default function Navbar() {
@@ -40,7 +41,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
@@ -56,7 +57,7 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Right side: theme toggle + CTA */}
+          {/* Right side: theme toggle + CTAs */}
           <div className="hidden md:flex items-center gap-3">
             <button
               onClick={toggle}
@@ -65,6 +66,9 @@ export default function Navbar() {
             >
               {dark ? <Sun size={18} /> : <Moon size={18} />}
             </button>
+            <Link to="/schedule" className="btn-outline text-sm py-2.5 px-5">
+              Schedule Walkthrough
+            </Link>
             <Link to="/contact" className="btn-primary text-sm py-2.5 px-5">
               Get a Quote
             </Link>
@@ -114,6 +118,13 @@ export default function Navbar() {
               className="btn-primary text-sm text-center mt-2"
             >
               Get a Quote
+            </Link>
+            <Link
+              to="/schedule"
+              onClick={() => setMenuOpen(false)}
+              className="btn-outline text-sm text-center mt-2"
+            >
+              Schedule a Walkthrough
             </Link>
           </nav>
         </div>

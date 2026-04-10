@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, ChevronDown } from 'lucide-react'
+import { ArrowRight, ChevronDown, CalendarCheck } from 'lucide-react'
 
 export default function Hero() {
   return (
@@ -53,8 +53,9 @@ export default function Hero() {
             Get a Free Quote
             <ArrowRight size={18} />
           </Link>
-          <Link to="/services" className="btn-outline text-base px-8 py-4">
-            Our Services
+          <Link to="/schedule" className="btn-outline text-base px-8 py-4 inline-flex items-center gap-2">
+            <CalendarCheck size={18} />
+            Schedule a Walkthrough
           </Link>
         </div>
 

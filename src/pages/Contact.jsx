@@ -1,12 +1,16 @@
 import { useState } from 'react'
-import { Mail, Clock, MapPin, CheckCircle, Loader2 } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Mail, Clock, MapPin, CheckCircle, Loader2, ArrowRight } from 'lucide-react'
 import ScrollFadeIn from '@/components/ScrollFadeIn'
 
 // TODO: Replace with your Formspree form ID after signing up at formspree.io
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xreoykgp'
 
 const serviceOptions = [
-  'Tech Consultation',
+  'Internet Cable Installation (Residential)',
+  'Internet Cable Installation (Commercial)',
+  'TV Mounting',
+  'Device & Equipment Installs',
   'Other',
 ]
 
@@ -232,7 +236,7 @@ export default function Contact() {
                         </div>
                         <div>
                           <p className="text-gray-900 dark:text-white font-medium text-sm mb-0.5">Service Area</p>
-                          <p className="text-gray-500 dark:text-gray-400 text-sm">Charlotte, NC and surrounding areas</p>
+                          <p className="text-gray-500 dark:text-gray-400 text-sm">North Carolina and surrounding areas</p>
                         </div>
                       </li>
                       <li className="flex items-start gap-4">
@@ -264,6 +268,19 @@ export default function Contact() {
                         Flexible scheduling to fit your needs
                       </li>
                     </ul>
+                  </div>
+
+                  <div className="bg-brand/5 border border-brand/20 rounded-2xl p-5 mt-4">
+                    <p className="text-gray-900 dark:text-white font-semibold text-sm mb-1">Need an On-Site Assessment?</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-xs leading-relaxed mb-3">
+                      For larger projects, schedule a free walkthrough and we'll come to you.
+                    </p>
+                    <Link
+                      to="/schedule"
+                      className="inline-flex items-center gap-1.5 text-brand text-sm font-semibold hover:underline"
+                    >
+                      Schedule a Walkthrough <ArrowRight size={14} />
+                    </Link>
                   </div>
                 </div>
               </ScrollFadeIn>

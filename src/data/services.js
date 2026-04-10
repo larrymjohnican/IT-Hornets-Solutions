@@ -1,4 +1,4 @@
-import { Cable, Building2, Tv } from 'lucide-react'
+import { Cable, Building2, Tv, Wifi } from 'lucide-react'
 
 export const services = [
   {
@@ -27,5 +27,14 @@ export const services = [
     description:
       'Clean, safe, and professional TV wall mounting for any screen size on any wall type. We handle everything — from finding studs to concealing cables — leaving you with a sleek, clutter-free setup.',
     features: ['Any wall type (drywall, brick, concrete)', 'Cable concealment & management', 'Tilt & full-motion mounts'],
+  },
+  {
+    id: 'device-installs',
+    icon: Wifi,
+    title: 'Device & Equipment Installs',
+    badge: null,
+    description:
+      'Professional setup and installation of your network hardware and smart home devices. We configure routers, wireless access points, switches, and more — so everything works seamlessly from day one.',
+    features: ['Router & access point setup', 'Smart home device configuration', 'Network switch & hub installation'],
   },
 ]
