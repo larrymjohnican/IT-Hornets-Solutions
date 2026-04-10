@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { CheckCircle, ArrowRight } from 'lucide-react'
+import { CheckCircle, ArrowRight, CalendarCheck } from 'lucide-react'
 import ScrollFadeIn from '@/components/ScrollFadeIn'
 import { services } from '@/data/services'
 
@@ -87,9 +87,14 @@ export default function Services() {
               Every job is different. If your needs don't fit neatly into the above,
               reach out and we'll figure out the right solution together.
             </p>
-            <Link to="/contact" className="btn-primary inline-flex items-center gap-2">
-              Contact Us <ArrowRight size={16} />
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link to="/schedule" className="btn-primary inline-flex items-center gap-2">
+                <CalendarCheck size={16} /> Schedule a Walkthrough
+              </Link>
+              <Link to="/contact" className="btn-outline inline-flex items-center gap-2">
+                Get a Quote <ArrowRight size={16} />
+              </Link>
+            </div>
           </ScrollFadeIn>
         </div>
       </section>

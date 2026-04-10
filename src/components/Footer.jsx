@@ -6,6 +6,7 @@ const quickLinks = [
   { label: 'Services', to: '/services' },
   { label: 'About', to: '/about' },
   { label: 'Contact', to: '/contact' },
+  { label: 'Schedule', to: '/schedule' },
 ]
 
 export default function Footer() {

@@ -49,7 +49,7 @@ export default function Home() {
             </div>
           </ScrollFadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, i) => (
               <ScrollFadeIn key={service.id} delay={i * 120}>
                 <ServiceCard
@@ -142,6 +142,12 @@ export default function Home() {
           >
             Request a Free Quote <ArrowRight size={18} />
           </Link>
+          <p className="text-white/70 text-sm mt-5">
+            Want us to assess your space first?{' '}
+            <Link to="/schedule" className="underline font-semibold text-white hover:text-white/80">
+              Schedule a free walkthrough →
+            </Link>
+          </p>
         </div>
       </section>
     </>
