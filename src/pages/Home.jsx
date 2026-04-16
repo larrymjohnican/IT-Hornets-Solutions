@@ -24,7 +24,7 @@ const whyChooseUs = [
   {
     icon: MapPin,
     title: 'Local & Trusted',
-    description: "We're based right here in North Carolina — a local team you can count on.",
+    description: "We're based right here in Charlotte, NC — a local team you can count on.",
   },
 ]
 
@@ -114,10 +114,10 @@ export default function Home() {
               </div>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">
-              Proudly Serving North Carolina
+              Proudly Serving Charlotte, NC
             </h2>
             <p className="text-gray-500 dark:text-gray-400 text-base leading-relaxed">
-              We serve residential and commercial clients across North Carolina and surrounding areas.
+              We serve residential and commercial clients across Charlotte, NC and surrounding areas.
               Not sure if we cover your location?{' '}
               <Link to="/contact" className="text-brand hover:underline">
                 Reach out — we'd love to help.

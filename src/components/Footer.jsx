@@ -21,7 +21,7 @@ export default function Footer() {
             </div>
             <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-4">
               Connected Homes. Connected Businesses.<br />
-              Professional cable installation and TV mounting across North Carolina.
+              Professional cable installation and TV mounting in Charlotte, NC and surrounding areas.
             </p>
           </div>
 
@@ -60,7 +60,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3 text-gray-500 dark:text-gray-400 text-sm">
                 <MapPin size={15} className="text-brand shrink-0" />
-                <span>North Carolina</span>
+                <span>Charlotte, NC and surrounding areas</span>
               </li>
               <li className="flex items-center gap-3 text-gray-500 dark:text-gray-400 text-sm">
                 <Clock size={15} className="text-brand shrink-0" />

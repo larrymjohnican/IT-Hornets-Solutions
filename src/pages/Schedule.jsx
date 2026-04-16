@@ -31,6 +31,16 @@ const TIME_SLOTS = [
   '5:00 PM',
 ]
 
+const WEEKDAY_SLOTS = ['3:00 PM', '4:00 PM', '5:00 PM']
+
+function getAvailableSlots(date) {
+  if (!date) return TIME_SLOTS
+  const day = date.getDay() // 0=Sun, 1=Mon … 6=Sat
+  if (day >= 1 && day <= 5) return WEEKDAY_SLOTS // Mon–Fri: after 3 PM only
+  if (day === 6) return TIME_SLOTS               // Saturday: all slots
+  return []                                       // Sunday: blocked
+}
+
 const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 const MONTH_NAMES = [
@@ -235,7 +245,7 @@ export default function Schedule() {
                           Step 1 — Select a Date
                         </h2>
                         <p className="text-gray-500 text-xs mb-4">
-                          Available Monday – Saturday. Sundays are not available.
+                          Mon – Fri: after 3:00 PM. Saturdays: all day. Sundays unavailable.
                         </p>
 
                         {/* Calendar header */}
@@ -329,10 +339,12 @@ export default function Schedule() {
                           Step 2 — Select a Time
                         </h2>
                         <p className="text-gray-500 text-xs mb-4">
-                          All times are Eastern Time (ET).
+                          {selectedDate && selectedDate.getDay() >= 1 && selectedDate.getDay() <= 5
+                            ? 'Weekday appointments available after 3:00 PM ET.'
+                            : 'All times are Eastern Time (ET).'}
                         </p>
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
-                          {TIME_SLOTS.map((slot) => {
+                          {getAvailableSlots(selectedDate).map((slot) => {
                             const [startH] = slot.split(':')
                             const endHour = parseInt(startH, 10) + 1
                             const endPeriod = endHour >= 12 ? 'PM' : 'AM'
@@ -523,8 +535,8 @@ export default function Schedule() {
                       </div>
                       <div>
                         <p className="text-white font-medium text-sm mb-0.5">Hours</p>
-                        <p className="text-gray-400 text-sm">Monday – Saturday</p>
-                        <p className="text-gray-400 text-sm">8:00 AM – 6:00 PM ET</p>
+                        <p className="text-gray-400 text-sm">Mon – Fri: 3:00 PM – 6:00 PM ET</p>
+                        <p className="text-gray-400 text-sm">Saturday: 8:00 AM – 6:00 PM ET</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
@@ -533,7 +545,7 @@ export default function Schedule() {
                       </div>
                       <div>
                         <p className="text-white font-medium text-sm mb-0.5">Service Area</p>
-                        <p className="text-gray-400 text-sm">North Carolina and surrounding areas</p>
+                        <p className="text-gray-400 text-sm">Charlotte, NC and surrounding areas</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">

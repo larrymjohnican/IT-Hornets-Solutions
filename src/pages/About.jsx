@@ -50,12 +50,12 @@ export default function About() {
                 Our Story
               </p>
               <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 leading-tight">
-                Connecting North Carolina, One Install at a Time
+                Connecting Charlotte, NC, One Install at a Time
               </h1>
               <p className="text-gray-500 dark:text-gray-400 text-lg leading-relaxed mb-4">
                 Hornets IT Solutions LLC was founded with a simple mission: to bring
                 professional-grade cable installation and TV mounting services to homes
-                and businesses across North Carolina.
+                and businesses in Charlotte, NC and surrounding areas.
               </p>
               <p className="text-gray-500 dark:text-gray-400 text-lg leading-relaxed">
                 We believe every home deserves a fast, reliable wired connection and every

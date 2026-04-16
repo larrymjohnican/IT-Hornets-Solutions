@@ -29,7 +29,7 @@ export default function Hero() {
         <div className="inline-flex items-center gap-2 bg-brand/10 border border-brand/20 rounded-full px-4 py-1.5 mb-8">
           <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
           <span className="text-brand text-xs font-semibold tracking-widest uppercase">
-            Professional IT Services — North Carolina
+            Professional IT Services — Charlotte, NC
           </span>
         </div>
 
@@ -43,8 +43,8 @@ export default function Hero() {
         {/* Subheading */}
         <p className="text-gray-500 dark:text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
           Hornets IT Solutions provides expert internet cable installation and TV
-          mounting for homes and businesses across North Carolina. Fast, clean, and
-          done right the first time.
+          mounting for homes and businesses in Charlotte, NC and surrounding areas.
+          Fast, clean, and done right the first time.
         </p>
 
         {/* CTAs */}

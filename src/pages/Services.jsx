@@ -23,8 +23,8 @@ export default function Services() {
             Our Services
           </h1>
           <p className="text-gray-500 dark:text-gray-400 text-lg leading-relaxed">
-            Professional, reliable, and clean installs for homes and businesses across
-            North Carolina. Every job is done right — the first time.
+            Professional, reliable, and clean installs for homes and businesses in
+            Charlotte, NC and surrounding areas. Every job is done right — the first time.
           </p>
         </div>
       </section>

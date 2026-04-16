@@ -20,6 +20,7 @@ export default function Contact() {
     phone: '',
     email: '',
     service: '',
+    address: '',
     message: '',
   })
   const [submitted, setSubmitted] = useState(false)
@@ -32,8 +33,16 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setLoading(true)
     setError(null)
+    if (!form.address.trim()) {
+      setError('Service address is required.')
+      return
+    }
+    if (!/\bNC\b|North Carolina/i.test(form.address)) {
+      setError('Sorry, we only serve the Charlotte, NC area. Please include "NC" in your address.')
+      return
+    }
+    setLoading(true)
     try {
       const res = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
@@ -187,6 +196,20 @@ export default function Contact() {
 
                       <div>
                         <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1.5">
+                          Service Address *
+                        </label>
+                        <input
+                          type="text"
+                          name="address"
+                          value={form.address}
+                          onChange={handleChange}
+                          placeholder="123 Main St, Charlotte, NC 28201"
+                          className="input-field"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1.5">
                           Tell Us About Your Needs *
                         </label>
                         <textarea
@@ -236,7 +259,7 @@ export default function Contact() {
                         </div>
                         <div>
                           <p className="text-gray-900 dark:text-white font-medium text-sm mb-0.5">Service Area</p>
-                          <p className="text-gray-500 dark:text-gray-400 text-sm">North Carolina and surrounding areas</p>
+                          <p className="text-gray-500 dark:text-gray-400 text-sm">Charlotte, NC and surrounding areas</p>
                         </div>
                       </li>
                       <li className="flex items-start gap-4">
