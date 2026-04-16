@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom'
 import { Mail, Clock, MapPin, CheckCircle, Loader2, ArrowRight } from 'lucide-react'
 import ScrollFadeIn from '@/components/ScrollFadeIn'
 
-// TODO: Replace with your Formspree form ID after signing up at formspree.io
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xreoykgp'
-
 const serviceOptions = [
   'Internet Cable Installation (Residential)',
   'Internet Cable Installation (Commercial)',
@@ -44,9 +41,9 @@ export default function Contact() {
     }
     setLoading(true)
     try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
+      const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
       if (res.ok) {

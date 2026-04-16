@@ -7,6 +7,7 @@ import {
   MapPin,
   CheckCircle,
   Phone,
+  Loader2,
 } from 'lucide-react'
 import ScrollFadeIn from '@/components/ScrollFadeIn'
 
@@ -84,6 +85,7 @@ export default function Schedule() {
     () => new Date(new Date().getFullYear(), new Date().getMonth(), 1)
   )
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
 
   const today = useMemo(() => getToday(), [])
@@ -160,14 +162,34 @@ export default function Schedule() {
     return e
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length > 0) {
       setErrors(errs)
       return
     }
-    setSubmitted(true)
+    setLoading(true)
+    try {
+      const res = await fetch('/api/schedule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...form,
+          date: formatDate(selectedDate),
+          slot: selectedSlot,
+        }),
+      })
+      if (res.ok) {
+        setSubmitted(true)
+      } else {
+        setErrors((prev) => ({ ...prev, submit: 'Something went wrong. Please try again or email us directly.' }))
+      }
+    } catch {
+      setErrors((prev) => ({ ...prev, submit: 'Network error. Please check your connection and try again.' }))
+    } finally {
+      setLoading(false)
+    }
   }
 
   const resetForm = () => {
@@ -175,6 +197,7 @@ export default function Schedule() {
     setSelectedDate(null)
     setSelectedSlot(null)
     setErrors({})
+    setLoading(false)
     setSubmitted(false)
   }
 
@@ -499,8 +522,19 @@ export default function Schedule() {
                         </div>
                       )}
 
-                      <button type="submit" className="btn-primary w-full text-center text-base py-4">
-                        Request Walkthrough Appointment
+                      {errors.submit && (
+                        <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 text-red-400 text-sm">
+                          {errors.submit}
+                        </div>
+                      )}
+
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="btn-primary w-full text-center text-base py-4 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                      >
+                        {loading && <Loader2 size={18} className="animate-spin" />}
+                        {loading ? 'Sending…' : 'Request Walkthrough Appointment'}
                       </button>
                     </form>
                   )}
