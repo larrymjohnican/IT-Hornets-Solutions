@@ -10,6 +10,7 @@ import {
   Loader2,
 } from 'lucide-react'
 import ScrollFadeIn from '@/components/ScrollFadeIn'
+import AddressAutocomplete from '@/components/AddressAutocomplete'
 
 const SERVICE_OPTIONS = [
   'Internet Cable Installation (Residential)',
@@ -87,6 +88,7 @@ export default function Schedule() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
+  const [addressState, setAddressState] = useState('')
 
   const today = useMemo(() => getToday(), [])
 
@@ -150,13 +152,30 @@ export default function Schedule() {
     setErrors((e) => ({ ...e, [name]: undefined }))
   }
 
+  const handleAddressChange = (value) => {
+    setForm((prev) => ({ ...prev, address: value }))
+    setAddressState('')
+    setErrors((e) => ({ ...e, address: undefined }))
+  }
+
+  const handleAddressStateSelect = (state) => {
+    setAddressState(state)
+  }
+
   const validate = () => {
     const e = {}
     if (!form.name.trim()) e.name = 'Name is required'
     if (!form.phone.trim()) e.phone = 'Phone is required'
     if (!form.email.trim()) e.email = 'Email is required'
     if (!form.service) e.service = 'Please select a service'
-    if (!form.address.trim()) e.address = 'Service address is required'
+    if (!form.address.trim()) {
+      e.address = 'Service address is required'
+    } else {
+      const outsideArea = addressState
+        ? addressState !== 'NC'
+        : !/\bNC\b|North Carolina/i.test(form.address)
+      if (outsideArea) e.address = 'We currently only serve the Charlotte, NC area.'
+    }
     if (!selectedDate) e.date = 'Please select a date'
     if (!selectedSlot) e.slot = 'Please select a time slot'
     return e
@@ -197,6 +216,7 @@ export default function Schedule() {
     setSelectedDate(null)
     setSelectedSlot(null)
     setErrors({})
+    setAddressState('')
     setLoading(false)
     setSubmitted(false)
   }
@@ -482,11 +502,10 @@ export default function Schedule() {
                             <label className="block text-gray-300 text-sm font-medium mb-1.5">
                               Service Address *
                             </label>
-                            <input
-                              type="text"
-                              name="address"
+                            <AddressAutocomplete
                               value={form.address}
-                              onChange={handleChange}
+                              onChange={handleAddressChange}
+                              onStateSelect={handleAddressStateSelect}
                               placeholder="123 Main St, Charlotte, NC"
                               className="input-field"
                             />

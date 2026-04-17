@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Mail, Clock, MapPin, CheckCircle, Loader2, ArrowRight } from 'lucide-react'
 import ScrollFadeIn from '@/components/ScrollFadeIn'
+import AddressAutocomplete from '@/components/AddressAutocomplete'
 
 const serviceOptions = [
   'Internet Cable Installation (Residential)',
@@ -23,9 +24,19 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [addressState, setAddressState] = useState('')
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
+  const handleAddressChange = (value) => {
+    setForm((prev) => ({ ...prev, address: value }))
+    setAddressState('') // clear on manual edit; onStateSelect will re-set on dropdown pick
+  }
+
+  const handleAddressStateSelect = (state) => {
+    setAddressState(state)
   }
 
   const handleSubmit = async (e) => {
@@ -35,8 +46,11 @@ export default function Contact() {
       setError('Service address is required.')
       return
     }
-    if (!/\bNC\b|North Carolina/i.test(form.address)) {
-      setError('Sorry, we only serve the Charlotte, NC area. Please include "NC" in your address.')
+    const outsideArea = addressState
+      ? addressState !== 'NC'
+      : !/\bNC\b|North Carolina/i.test(form.address)
+    if (outsideArea) {
+      setError('We currently only serve the Charlotte, NC area. Please enter a Charlotte, NC address.')
       return
     }
     setLoading(true)
@@ -195,11 +209,10 @@ export default function Contact() {
                         <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1.5">
                           Service Address *
                         </label>
-                        <input
-                          type="text"
-                          name="address"
+                        <AddressAutocomplete
                           value={form.address}
-                          onChange={handleChange}
+                          onChange={handleAddressChange}
+                          onStateSelect={handleAddressStateSelect}
                           placeholder="123 Main St, Charlotte, NC 28201"
                           className="input-field"
                         />
