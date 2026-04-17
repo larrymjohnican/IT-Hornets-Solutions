@@ -44,7 +44,12 @@ function shell(headerHtml, bodyHtml) {
 </html>`
 }
 
-function internalEmail({ name, phone, email, service, address, notes, date, slot }) {
+function fmtAddress({ street, apt, city, state, zip }) {
+  const line1 = apt ? `${street}, ${apt}` : street
+  return `${line1}, ${city}, ${state} ${zip}`
+}
+
+function internalEmail({ name, phone, email, service, street, apt, city, state, zip, notes, date, slot }) {
   const header = `<h1 style="margin:8px 0 0;color:#ffffff;font-size:22px;font-weight:700;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">New Walkthrough Request</h1>`
   const body = `
     <p style="margin:0 0 20px;font-size:14px;color:#555;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
@@ -59,13 +64,16 @@ function internalEmail({ name, phone, email, service, address, notes, date, slot
       ${row('Phone', phone)}
       ${row('Email', `<a href="mailto:${email}" style="color:#2d8ef5;">${email}</a>`)}
       ${row('Service', service)}
-      ${row('Address', address)}
+      ${row('Street', apt ? `${street}, ${apt}` : street)}
+      ${row('City', city)}
+      ${row('State', state)}
+      ${row('ZIP', zip)}
       ${notes ? row('Notes', `<span style="white-space:pre-wrap;">${notes}</span>`) : ''}
     </table>`
   return shell(header, body)
 }
 
-function confirmationEmail({ name, service, address, date, slot }) {
+function confirmationEmail({ name, service, street, apt, city, state, zip, date, slot }) {
   const header = `
     <h1 style="margin:8px 0 0;color:#ffffff;font-size:22px;font-weight:700;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Walkthrough Requested!</h1>
     <p style="margin:4px 0 0;color:rgba(255,255,255,0.8);font-size:13px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">We'll confirm your appointment within 1 business day.</p>`
@@ -79,7 +87,7 @@ function confirmationEmail({ name, service, address, date, slot }) {
       <p style="margin:0 0 16px;font-size:17px;font-weight:700;color:#111;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">${date} &nbsp;at&nbsp; ${slot}</p>
       <table width="100%" cellpadding="0" cellspacing="0">
         ${row('Service', service)}
-        ${row('Address', address)}
+        ${row('Address', fmtAddress({ street, apt, city, state, zip }))}
       </table>
     </div>
     <p style="margin:0 0 24px;font-size:14px;color:#666;line-height:1.6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
@@ -99,9 +107,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { name, phone, email, service, address, notes, date, slot } = req.body
+  const { name, phone, email, service, street, apt, city, state, zip, notes, date, slot } = req.body
 
-  if (!name || !email || !service || !address || !date || !slot) {
+  if (!name || !email || !service || !street || !city || !state || !zip || !date || !slot) {
     return res.status(400).json({ error: 'Missing required fields' })
   }
 
@@ -112,13 +120,13 @@ export default async function handler(req, res) {
         to: TO,
         replyTo: email,
         subject: `New Walkthrough Request — ${name} · ${date} at ${slot}`,
-        html: internalEmail({ name, phone, email, service, address, notes, date, slot }),
+        html: internalEmail({ name, phone, email, service, street, apt, city, state, zip, notes, date, slot }),
       }),
       resend.emails.send({
         from: FROM,
         to: email,
         subject: 'Your walkthrough request — Hornets IT Solutions',
-        html: confirmationEmail({ name, service, address, date, slot }),
+        html: confirmationEmail({ name, service, street, apt, city, state, zip, date, slot }),
       }),
     ])
     return res.status(200).json({ ok: true })

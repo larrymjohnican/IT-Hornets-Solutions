@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Mail, Clock, MapPin, CheckCircle, Loader2, ArrowRight } from 'lucide-react'
 import ScrollFadeIn from '@/components/ScrollFadeIn'
-import AddressAutocomplete from '@/components/AddressAutocomplete'
+import AddressFields from '@/components/AddressFields'
 
 const serviceOptions = [
   'Internet Cable Installation (Residential)',
@@ -12,45 +12,38 @@ const serviceOptions = [
   'Other',
 ]
 
+const emptyAddress = { street: '', apt: '', zip: '', city: '', state: '' }
+
 export default function Contact() {
   const [form, setForm] = useState({
     name: '',
     phone: '',
     email: '',
     service: '',
-    address: '',
+    ...emptyAddress,
     message: '',
   })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [addressState, setAddressState] = useState('')
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleAddressChange = (value) => {
-    setForm((prev) => ({ ...prev, address: value }))
-    setAddressState('') // clear on manual edit; onStateSelect will re-set on dropdown pick
-  }
-
-  const handleAddressStateSelect = (state) => {
-    setAddressState(state)
+  const handleAddressField = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }))
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(null)
-    if (!form.address.trim()) {
-      setError('Service address is required.')
-      return
-    }
-    const outsideArea = addressState
-      ? addressState !== 'NC'
-      : !/\bNC\b|North Carolina/i.test(form.address)
-    if (outsideArea) {
-      setError('We currently only serve the Charlotte, NC area. Please enter a Charlotte, NC address.')
+    if (!form.street.trim()) { setError('Street address is required.'); return }
+    if (!form.zip || !/^\d{5}$/.test(form.zip)) { setError('Please enter a valid 5-digit ZIP code.'); return }
+    if (!form.city.trim()) { setError('City is required.'); return }
+    if (!form.state.trim()) { setError('State is required.'); return }
+    if (form.state !== 'NC') {
+      setError('We currently only serve the Charlotte, NC area.')
       return
     }
     setLoading(true)
@@ -119,7 +112,7 @@ export default function Contact() {
                         back to you shortly.
                       </p>
                       <button
-                        onClick={() => { setSubmitted(false); setForm({ name: '', phone: '', email: '', service: '', address: '', message: '' }) }}
+                        onClick={() => { setSubmitted(false); setForm({ name: '', phone: '', email: '', service: '', ...emptyAddress, message: '' }) }}
                         className="mt-8 btn-outline text-sm"
                       >
                         Send Another Request
@@ -198,23 +191,18 @@ export default function Contact() {
                         >
                           <option value="" disabled>Select a service...</option>
                           {serviceOptions.map((opt) => (
-                            <option key={opt} value={opt}>
-                              {opt}
-                            </option>
+                            <option key={opt} value={opt}>{opt}</option>
                           ))}
                         </select>
                       </div>
 
                       <div>
-                        <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1.5">
+                        <p className="text-gray-700 dark:text-gray-300 text-sm font-medium mb-3">
                           Service Address *
-                        </label>
-                        <AddressAutocomplete
-                          value={form.address}
-                          onChange={handleAddressChange}
-                          onStateSelect={handleAddressStateSelect}
-                          placeholder="123 Main St, Charlotte, NC 28201"
-                          className="input-field"
+                        </p>
+                        <AddressFields
+                          value={{ street: form.street, apt: form.apt, zip: form.zip, city: form.city, state: form.state }}
+                          onChange={handleAddressField}
                         />
                       </div>
 

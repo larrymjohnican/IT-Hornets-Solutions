@@ -44,7 +44,12 @@ function shell(headerHtml, bodyHtml) {
 </html>`
 }
 
-function internalEmail({ name, phone, email, service, address, message }) {
+function fmtAddress({ street, apt, city, state, zip }) {
+  const line1 = apt ? `${street}, ${apt}` : street
+  return `${line1}, ${city}, ${state} ${zip}`
+}
+
+function internalEmail({ name, phone, email, service, street, apt, city, state, zip, message }) {
   const header = `<h1 style="margin:8px 0 0;color:#ffffff;font-size:22px;font-weight:700;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">New Quote Request</h1>`
   const body = `
     <p style="margin:0 0 20px;font-size:14px;color:#555;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
@@ -55,13 +60,16 @@ function internalEmail({ name, phone, email, service, address, message }) {
       ${row('Phone', phone)}
       ${row('Email', `<a href="mailto:${email}" style="color:#2d8ef5;">${email}</a>`)}
       ${row('Service', service)}
-      ${row('Address', address)}
+      ${row('Street', apt ? `${street}, ${apt}` : street)}
+      ${row('City', city)}
+      ${row('State', state)}
+      ${row('ZIP', zip)}
       ${row('Message', `<span style="white-space:pre-wrap;">${message}</span>`)}
     </table>`
   return shell(header, body)
 }
 
-function confirmationEmail({ name, service, address, message }) {
+function confirmationEmail({ name, service, street, apt, city, state, zip, message }) {
   const header = `
     <h1 style="margin:8px 0 0;color:#ffffff;font-size:22px;font-weight:700;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">We got your request!</h1>
     <p style="margin:4px 0 0;color:rgba(255,255,255,0.8);font-size:13px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">We'll be in touch within 1 business day.</p>`
@@ -74,7 +82,7 @@ function confirmationEmail({ name, service, address, message }) {
       <p style="margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#2d8ef5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your Submission</p>
       <table width="100%" cellpadding="0" cellspacing="0">
         ${row('Service', service)}
-        ${row('Address', address)}
+        ${row('Address', fmtAddress({ street, apt, city, state, zip }))}
         ${row('Message', `<span style="white-space:pre-wrap;">${message}</span>`)}
       </table>
     </div>
@@ -92,9 +100,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { name, phone, email, service, address, message } = req.body
+  const { name, phone, email, service, street, apt, city, state, zip, message } = req.body
 
-  if (!name || !email || !service || !address || !message) {
+  if (!name || !email || !service || !street || !city || !state || !zip || !message) {
     return res.status(400).json({ error: 'Missing required fields' })
   }
 
@@ -105,13 +113,13 @@ export default async function handler(req, res) {
         to: TO,
         replyTo: email,
         subject: `New Quote Request — ${name}`,
-        html: internalEmail({ name, phone, email, service, address, message }),
+        html: internalEmail({ name, phone, email, service, street, apt, city, state, zip, message }),
       }),
       resend.emails.send({
         from: FROM,
         to: email,
         subject: 'We received your quote request — Hornets IT Solutions',
-        html: confirmationEmail({ name, service, address, message }),
+        html: confirmationEmail({ name, service, street, apt, city, state, zip, message }),
       }),
     ])
     return res.status(200).json({ ok: true })

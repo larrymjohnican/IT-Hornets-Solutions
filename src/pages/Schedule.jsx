@@ -10,7 +10,7 @@ import {
   Loader2,
 } from 'lucide-react'
 import ScrollFadeIn from '@/components/ScrollFadeIn'
-import AddressAutocomplete from '@/components/AddressAutocomplete'
+import AddressFields from '@/components/AddressFields'
 
 const SERVICE_OPTIONS = [
   'Internet Cable Installation (Residential)',
@@ -77,7 +77,11 @@ export default function Schedule() {
     phone: '',
     email: '',
     service: '',
-    address: '',
+    street: '',
+    apt: '',
+    zip: '',
+    city: '',
+    state: '',
     notes: '',
   })
   const [selectedDate, setSelectedDate] = useState(null)
@@ -88,7 +92,6 @@ export default function Schedule() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
-  const [addressState, setAddressState] = useState('')
 
   const today = useMemo(() => getToday(), [])
 
@@ -152,14 +155,9 @@ export default function Schedule() {
     setErrors((e) => ({ ...e, [name]: undefined }))
   }
 
-  const handleAddressChange = (value) => {
-    setForm((prev) => ({ ...prev, address: value }))
-    setAddressState('')
-    setErrors((e) => ({ ...e, address: undefined }))
-  }
-
-  const handleAddressStateSelect = (state) => {
-    setAddressState(state)
+  const handleAddressField = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }))
+    setErrors((e) => ({ ...e, [field]: undefined }))
   }
 
   const validate = () => {
@@ -168,14 +166,11 @@ export default function Schedule() {
     if (!form.phone.trim()) e.phone = 'Phone is required'
     if (!form.email.trim()) e.email = 'Email is required'
     if (!form.service) e.service = 'Please select a service'
-    if (!form.address.trim()) {
-      e.address = 'Service address is required'
-    } else {
-      const outsideArea = addressState
-        ? addressState !== 'NC'
-        : !/\bNC\b|North Carolina/i.test(form.address)
-      if (outsideArea) e.address = 'We currently only serve the Charlotte, NC area.'
-    }
+    if (!form.street.trim()) e.street = 'Street address is required'
+    if (!form.zip || !/^\d{5}$/.test(form.zip)) e.zip = 'Valid ZIP code required'
+    if (!form.city.trim()) e.city = 'City is required'
+    if (!form.state.trim()) e.state = 'State is required'
+    else if (form.state !== 'NC') e.state = 'We only serve the Charlotte, NC area'
     if (!selectedDate) e.date = 'Please select a date'
     if (!selectedSlot) e.slot = 'Please select a time slot'
     return e
@@ -194,9 +189,9 @@ export default function Schedule() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...form,
-          date: formatDate(selectedDate),
-          slot: selectedSlot,
+          name: form.name, phone: form.phone, email: form.email, service: form.service,
+          street: form.street, apt: form.apt, zip: form.zip, city: form.city, state: form.state,
+          notes: form.notes, date: formatDate(selectedDate), slot: selectedSlot,
         }),
       })
       if (res.ok) {
@@ -212,11 +207,10 @@ export default function Schedule() {
   }
 
   const resetForm = () => {
-    setForm({ name: '', phone: '', email: '', service: '', address: '', notes: '' })
+    setForm({ name: '', phone: '', email: '', service: '', street: '', apt: '', zip: '', city: '', state: '', notes: '' })
     setSelectedDate(null)
     setSelectedSlot(null)
     setErrors({})
-    setAddressState('')
     setLoading(false)
     setSubmitted(false)
   }
@@ -499,19 +493,15 @@ export default function Schedule() {
                           </div>
 
                           <div>
-                            <label className="block text-gray-300 text-sm font-medium mb-1.5">
+                            <p className="block text-gray-300 text-sm font-medium mb-3">
                               Service Address *
-                            </label>
-                            <AddressAutocomplete
-                              value={form.address}
-                              onChange={handleAddressChange}
-                              onStateSelect={handleAddressStateSelect}
-                              placeholder="123 Main St, Charlotte, NC"
-                              className="input-field"
+                            </p>
+                            <AddressFields
+                              value={{ street: form.street, apt: form.apt, zip: form.zip, city: form.city, state: form.state }}
+                              onChange={handleAddressField}
+                              errors={{ street: errors.street, zip: errors.zip, city: errors.city, state: errors.state }}
+                              dark
                             />
-                            {errors.address && (
-                              <p className="text-red-400 text-xs mt-1">{errors.address}</p>
-                            )}
                           </div>
 
                           <div>
